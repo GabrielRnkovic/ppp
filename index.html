@@ -92,6 +92,7 @@
         .game-tabs {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 30px;
         }
@@ -476,6 +477,91 @@
             transition: width 0.1s linear;
         }
 
+        /* Tile Frenzy Styles */
+        .frenzy-container {
+            position: relative;
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+        }
+
+        .frenzy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 8px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            aspect-ratio: 1;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .frenzy-cell {
+            background: rgba(72, 52, 212, 0.15);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 2px solid transparent;
+            aspect-ratio: 1;
+        }
+
+        .frenzy-cell:hover {
+            background: rgba(72, 52, 212, 0.25);
+            border-color: rgba(72, 52, 212, 0.4);
+        }
+
+        .frenzy-cell.active {
+            background: rgba(72, 52, 212, 0.3);
+            border-color: var(--primary);
+            animation: tilePulse 0.5s ease infinite alternate;
+        }
+
+        @keyframes tilePulse {
+            from { box-shadow: 0 0 10px rgba(72, 52, 212, 0.3); }
+            to { box-shadow: 0 0 25px rgba(72, 52, 212, 0.6); }
+        }
+
+        .frenzy-cell .frenzy-target {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            animation: targetPop 0.15s ease;
+            user-select: none;
+            -webkit-user-drag: none;
+            pointer-events: none;
+        }
+
+        .frenzy-cell.hit {
+            animation: cellHit 0.3s ease;
+        }
+
+        @keyframes cellHit {
+            0% { transform: scale(1); background: rgba(46, 204, 113, 0.5); }
+            50% { transform: scale(0.9); }
+            100% { transform: scale(1); background: rgba(72, 52, 212, 0.15); }
+        }
+
+        .combo-popup {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--warning);
+            text-shadow: 0 0 20px rgba(243, 156, 18, 0.8);
+            animation: comboFloat 0.8s ease forwards;
+            pointer-events: none;
+            z-index: 30;
+        }
+
+        @keyframes comboFloat {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-50px) scale(1.5); }
+        }
+
         @media (max-width: 768px) {
             .stats-row {
                 grid-template-columns: repeat(2, 1fr);
@@ -493,6 +579,20 @@
                 width: 90px;
                 height: 90px;
             }
+            
+            .tab-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .frenzy-grid {
+                gap: 6px;
+                padding: 10px;
+            }
+            
+            .frenzy-cell {
+                border-radius: 8px;
+            }
         }
     </style>
 </head>
@@ -509,6 +609,7 @@
         <div class="game-tabs">
             <button class="tab-btn active" onclick="switchTab('typing')">⌨️ Typing Challenge</button>
             <button class="tab-btn" onclick="switchTab('aim')">🎯 Aim Trainer</button>
+            <button class="tab-btn" onclick="switchTab('frenzy')">⚡ Tile Frenzy</button>
         </div>
 
         <!-- Typing Challenge Section -->
@@ -577,6 +678,53 @@
 
                 <div class="progress-bar">
                     <div class="progress-fill" id="aim-progress" style="width: 100%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tile Frenzy Section -->
+        <section id="frenzy-section" class="game-section">
+            <div class="card">
+                <div class="aim-stats">
+                    <div class="aim-stat">
+                        <div class="aim-stat-label">Time Left</div>
+                        <div class="aim-stat-value" id="frenzy-timer">30s</div>
+                    </div>
+                    <div class="aim-stat">
+                        <div class="aim-stat-label">Score</div>
+                        <div class="aim-stat-value" id="frenzy-score">0</div>
+                    </div>
+                    <div class="aim-stat">
+                        <div class="aim-stat-label">Combo</div>
+                        <div class="aim-stat-value" id="frenzy-combo">x1</div>
+                    </div>
+                    <div class="aim-stat">
+                        <div class="aim-stat-label">Best Combo</div>
+                        <div class="aim-stat-value" id="frenzy-best">x1</div>
+                    </div>
+                </div>
+
+                <div class="frenzy-container" id="frenzy-container">
+                    <div class="frenzy-grid" id="frenzy-grid">
+                        <div class="frenzy-cell" data-index="0"></div>
+                        <div class="frenzy-cell" data-index="1"></div>
+                        <div class="frenzy-cell" data-index="2"></div>
+                        <div class="frenzy-cell" data-index="3"></div>
+                        <div class="frenzy-cell" data-index="4"></div>
+                        <div class="frenzy-cell" data-index="5"></div>
+                        <div class="frenzy-cell" data-index="6"></div>
+                        <div class="frenzy-cell" data-index="7"></div>
+                        <div class="frenzy-cell" data-index="8"></div>
+                    </div>
+                    <div class="aim-start-overlay" id="frenzy-overlay">
+                        <h3>⚡ Tile Frenzy!</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">4 tiles appear at once - click them fast!</p>
+                        <button class="btn" onclick="startFrenzyGame()">⚡ Start Frenzy</button>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="frenzy-progress" style="width: 100%"></div>
                 </div>
             </div>
         </section>
@@ -1055,18 +1203,259 @@
             aimProgressEl.style.width = '100%';
         }
 
+        // ============ TILE FRENZY ============
+        let frenzyGameActive = false;
+        let frenzyStartTime = null;
+        let frenzyTimerInterval = null;
+        let frenzyScore = 0;
+        let frenzyCombo = 1;
+        let frenzyBestCombo = 1;
+        let frenzyLastHitTime = null;
+        let activeTiles = new Set();
+        const FRENZY_DURATION = 30000;
+        const TILES_COUNT = 4;
+        const COMBO_TIMEOUT = 800; // ms to keep combo
+
+        const frenzyContainer = document.getElementById('frenzy-container');
+        const frenzyGrid = document.getElementById('frenzy-grid');
+        const frenzyOverlay = document.getElementById('frenzy-overlay');
+        const frenzyTimerEl = document.getElementById('frenzy-timer');
+        const frenzyScoreEl = document.getElementById('frenzy-score');
+        const frenzyComboEl = document.getElementById('frenzy-combo');
+        const frenzyBestEl = document.getElementById('frenzy-best');
+        const frenzyProgressEl = document.getElementById('frenzy-progress');
+        const frenzyCells = document.querySelectorAll('.frenzy-cell');
+
+        function startFrenzyGame() {
+            frenzyGameActive = true;
+            frenzyStartTime = Date.now();
+            frenzyScore = 0;
+            frenzyCombo = 1;
+            frenzyBestCombo = 1;
+            frenzyLastHitTime = null;
+            activeTiles.clear();
+            
+            frenzyOverlay.classList.add('hidden');
+            updateFrenzyStats();
+            
+            // Spawn initial tiles
+            spawnFrenzyTiles();
+            
+            // Setup cell click handlers
+            frenzyCells.forEach(cell => {
+                cell.addEventListener('click', handleFrenzyClick);
+            });
+            
+            frenzyTimerInterval = setInterval(() => {
+                const elapsed = Date.now() - frenzyStartTime;
+                const remaining = Math.max(0, FRENZY_DURATION - elapsed);
+                const seconds = Math.ceil(remaining / 1000);
+                
+                frenzyTimerEl.textContent = seconds + 's';
+                frenzyProgressEl.style.width = ((remaining / FRENZY_DURATION) * 100) + '%';
+                
+                // Check combo timeout
+                if (frenzyLastHitTime && Date.now() - frenzyLastHitTime > COMBO_TIMEOUT) {
+                    frenzyCombo = 1;
+                    updateFrenzyStats();
+                }
+                
+                if (remaining <= 0) {
+                    endFrenzyGame();
+                }
+            }, 100);
+        }
+
+        function spawnFrenzyTiles() {
+            if (!frenzyGameActive) return;
+            
+            // Get empty cells
+            const emptyCells = [];
+            frenzyCells.forEach((cell, index) => {
+                if (!activeTiles.has(index)) {
+                    emptyCells.push(index);
+                }
+            });
+            
+            // Spawn tiles until we have TILES_COUNT active
+            while (activeTiles.size < TILES_COUNT && emptyCells.length > 0) {
+                const randomIndex = Math.floor(Math.random() * emptyCells.length);
+                const cellIndex = emptyCells.splice(randomIndex, 1)[0];
+                
+                activeTiles.add(cellIndex);
+                const cell = frenzyCells[cellIndex];
+                cell.classList.add('active');
+                
+                // Add logo image
+                const img = document.createElement('img');
+                img.src = 'frid.png';
+                img.className = 'frenzy-target';
+                img.draggable = false;
+                cell.appendChild(img);
+            }
+        }
+
+        function handleFrenzyClick(e) {
+            if (!frenzyGameActive) return;
+            
+            const cell = e.currentTarget;
+            const index = parseInt(cell.dataset.index);
+            
+            if (activeTiles.has(index)) {
+                // Hit!
+                const now = Date.now();
+                
+                // Update combo
+                if (frenzyLastHitTime && now - frenzyLastHitTime < COMBO_TIMEOUT) {
+                    frenzyCombo++;
+                    if (frenzyCombo > frenzyBestCombo) {
+                        frenzyBestCombo = frenzyCombo;
+                    }
+                    
+                    // Show combo popup for big combos
+                    if (frenzyCombo >= 3 && frenzyCombo % 2 === 1) {
+                        showComboPopup(cell, frenzyCombo);
+                    }
+                } else {
+                    frenzyCombo = 1;
+                }
+                
+                frenzyLastHitTime = now;
+                
+                // Add score with combo multiplier
+                frenzyScore += 10 * frenzyCombo;
+                
+                // Remove tile
+                activeTiles.delete(index);
+                cell.classList.remove('active');
+                cell.classList.add('hit');
+                cell.innerHTML = '';
+                
+                setTimeout(() => {
+                    cell.classList.remove('hit');
+                }, 300);
+                
+                updateFrenzyStats();
+                
+                // Spawn new tile
+                setTimeout(() => spawnFrenzyTiles(), 50);
+            }
+        }
+
+        function showComboPopup(cell, combo) {
+            const popup = document.createElement('div');
+            popup.className = 'combo-popup';
+            popup.textContent = `x${combo}!`;
+            
+            const rect = cell.getBoundingClientRect();
+            const containerRect = frenzyContainer.getBoundingClientRect();
+            
+            popup.style.left = (rect.left - containerRect.left + rect.width / 2 - 30) + 'px';
+            popup.style.top = (rect.top - containerRect.top) + 'px';
+            
+            frenzyContainer.appendChild(popup);
+            
+            setTimeout(() => popup.remove(), 800);
+        }
+
+        function updateFrenzyStats() {
+            frenzyScoreEl.textContent = frenzyScore;
+            frenzyComboEl.textContent = 'x' + frenzyCombo;
+            frenzyBestEl.textContent = 'x' + frenzyBestCombo;
+            
+            // Color combo based on value
+            if (frenzyCombo >= 5) {
+                frenzyComboEl.style.color = 'var(--warning)';
+            } else if (frenzyCombo >= 3) {
+                frenzyComboEl.style.color = 'var(--success)';
+            } else {
+                frenzyComboEl.style.color = 'var(--primary-light)';
+            }
+        }
+
+        function endFrenzyGame() {
+            frenzyGameActive = false;
+            clearInterval(frenzyTimerInterval);
+            
+            // Clear all tiles
+            frenzyCells.forEach(cell => {
+                cell.classList.remove('active');
+                cell.innerHTML = '';
+                cell.removeEventListener('click', handleFrenzyClick);
+            });
+            activeTiles.clear();
+            
+            const modal = document.getElementById('results-modal');
+            const resultsContent = document.getElementById('results-content');
+            const resultsTitle = document.getElementById('results-title');
+            
+            modal.classList.remove('cheater');
+            resultsTitle.textContent = '⚡ Frenzy Complete!';
+            
+            let rating = '';
+            if (frenzyScore >= 2000) rating = '🔥 FRENZY MASTER';
+            else if (frenzyScore >= 1500) rating = '⚡ LIGHTNING FAST';
+            else if (frenzyScore >= 1000) rating = '🌟 TILE CRUSHER';
+            else if (frenzyScore >= 500) rating = '👍 GETTING THERE';
+            else rating = '🎮 KEEP CLICKING';
+            
+            resultsContent.innerHTML = `
+                <div class="accuracy-ring">${frenzyScore}</div>
+                <div class="result-item">
+                    <span class="result-label">Final Score</span>
+                    <span class="result-value">${frenzyScore}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Best Combo</span>
+                    <span class="result-value">x${frenzyBestCombo}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Avg Points/Sec</span>
+                    <span class="result-value">${Math.round(frenzyScore / 30)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Rating</span>
+                    <span class="result-value">${rating}</span>
+                </div>
+            `;
+            
+            document.getElementById('results-overlay').classList.add('show');
+        }
+
+        function resetFrenzyGame() {
+            frenzyOverlay.classList.remove('hidden');
+            frenzyTimerEl.textContent = '30s';
+            frenzyScoreEl.textContent = '0';
+            frenzyComboEl.textContent = 'x1';
+            frenzyComboEl.style.color = 'var(--primary-light)';
+            frenzyBestEl.textContent = 'x1';
+            frenzyProgressEl.style.width = '100%';
+            
+            // Clear any remaining tiles
+            frenzyCells.forEach(cell => {
+                cell.classList.remove('active');
+                cell.innerHTML = '';
+            });
+            activeTiles.clear();
+        }
+
         // ============ TAB SWITCHING ============
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.game-section').forEach(section => section.classList.remove('active'));
             
+            const tabs = document.querySelectorAll('.tab-btn');
+            
             if (tab === 'typing') {
-                document.querySelector('.tab-btn:first-child').classList.add('active');
+                tabs[0].classList.add('active');
                 document.getElementById('typing-section').classList.add('active');
                 typingInput.focus();
-            } else {
-                document.querySelector('.tab-btn:last-child').classList.add('active');
+            } else if (tab === 'aim') {
+                tabs[1].classList.add('active');
                 document.getElementById('aim-section').classList.add('active');
+            } else if (tab === 'frenzy') {
+                tabs[2].classList.add('active');
+                document.getElementById('frenzy-section').classList.add('active');
             }
         }
 
@@ -1076,8 +1465,10 @@
             // Reset appropriate game
             if (document.getElementById('typing-section').classList.contains('active')) {
                 resetTypingGame();
-            } else {
+            } else if (document.getElementById('aim-section').classList.contains('active')) {
                 resetAimGame();
+            } else if (document.getElementById('frenzy-section').classList.contains('active')) {
+                resetFrenzyGame();
             }
         }
 
