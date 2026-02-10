@@ -382,12 +382,15 @@
 
         .aim-target {
             position: absolute;
-            width: 80px;
-            height: 80px;
+            width: 120px;
+            height: 120px;
             cursor: pointer;
             transition: transform 0.1s ease;
             animation: targetPop 0.2s ease;
             z-index: 10;
+            user-select: none;
+            -webkit-user-drag: none;
+            pointer-events: auto;
         }
 
         .aim-target:hover {
@@ -487,8 +490,8 @@
             }
             
             .aim-target {
-                width: 60px;
-                height: 60px;
+                width: 90px;
+                height: 90px;
             }
         }
     </style>
@@ -910,11 +913,12 @@
             const target = document.createElement('img');
             target.src = 'frid.png';
             target.className = 'aim-target';
+            target.draggable = false;
             
             // Random position
             const containerRect = aimContainer.getBoundingClientRect();
-            const maxX = containerRect.width - 80;
-            const maxY = containerRect.height - 80;
+            const maxX = containerRect.width - 120;
+            const maxY = containerRect.height - 120;
             
             target.style.left = Math.random() * maxX + 'px';
             target.style.top = Math.random() * maxY + 'px';
@@ -922,6 +926,15 @@
             target.addEventListener('click', (e) => {
                 e.stopPropagation();
                 handleHit(e);
+            });
+            
+            // Prevent dragging
+            target.addEventListener('dragstart', (e) => {
+                e.preventDefault();
+            });
+            
+            target.addEventListener('mousedown', (e) => {
+                e.preventDefault();
             });
             
             aimContainer.appendChild(target);
