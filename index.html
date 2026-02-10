@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRID Challenge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4834d4;
+            --primary-light: #686de0;
+            --primary-dark: #30336b;
+            --bg-dark: #1a1a2e;
+            --bg-darker: #0f0f1a;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --text: #ffffff;
+            --text-muted: #a0a0c0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .background-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url('frid.png');
+            background-repeat: repeat;
+            background-size: 200px;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            height: 80px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(72, 52, 212, 0.5));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .game-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--bg-dark);
+            color: var(--text-muted);
+            border: 2px solid transparent;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--text);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 5px 20px rgba(72, 52, 212, 0.4);
+        }
+
+        .game-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .game-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: linear-gradient(145deg, var(--bg-dark), rgba(30, 30, 50, 0.9));
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(72, 52, 212, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Typing Game Styles */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            background: rgba(72, 52, 212, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(72, 52, 212, 0.2);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-light);
+        }
+
+        .typing-area {
+            margin-bottom: 25px;
+        }
+
+        .target-text {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            font-family: 'Courier New', monospace;
+            word-wrap: break-word;
+        }
+
+        .target-text .correct {
+            color: var(--success);
+        }
+
+        .target-text .incorrect {
+            color: var(--danger);
+            background: rgba(231, 76, 60, 0.2);
+            border-radius: 3px;
+        }
+
+        .target-text .current {
+            background: var(--primary);
+            color: white;
+            border-radius: 3px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .target-text .pending {
+            color: var(--text-muted);
+        }
+
+        .typing-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .typing-input:focus {
+            box-shadow: 0 0 20px rgba(72, 52, 212, 0.4);
+        }
+
+        .typing-input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 5px 20px rgba(72, 52, 212, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(72, 52, 212, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-center {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Results Modal */
+        .results-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .results-overlay.show {
+            display: flex;
+        }
+
+        .results-modal {
+            background: linear-gradient(145deg, var(--bg-dark), var(--bg-darker));
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 60px rgba(72, 52, 212, 0.5);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .results-modal h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--primary-light);
+        }
+
+        .results-modal.cheater h2 {
+            color: var(--danger);
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1.2rem;
+        }
+
+        .result-item:last-of-type {
+            border-bottom: none;
+            margin-bottom: 30px;
+        }
+
+        .result-label {
+            color: var(--text-muted);
+        }
+
+        .result-value {
+            font-weight: 800;
+            color: var(--success);
+        }
+
+        .result-value.warning {
+            color: var(--warning);
+        }
+
+        .result-value.danger {
+            color: var(--danger);
+        }
+
+        .macro-warning {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--danger);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 25px;
+            color: var(--danger);
+        }
+
+        /* Aim Trainer Styles */
+        .aim-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: crosshair;
+            border: 2px solid var(--primary);
+        }
+
+        .aim-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background: rgba(72, 52, 212, 0.1);
+            margin-bottom: 20px;
+            border-radius: 12px;
+        }
+
+        .aim-stat {
+            text-align: center;
+        }
+
+        .aim-stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .aim-stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-light);
+        }
+
+        .aim-target {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            animation: targetPop 0.2s ease;
+            z-index: 10;
+        }
+
+        .aim-target:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes targetPop {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .aim-start-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .aim-start-overlay h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .aim-start-overlay.hidden {
+            display: none;
+        }
+
+        .aim-results {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .accuracy-ring {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 8px solid var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-light);
+        }
+
+        .click-effect {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid var(--danger);
+            animation: clickRipple 0.5s ease forwards;
+            pointer-events: none;
+        }
+
+        @keyframes clickRipple {
+            from { transform: scale(0); opacity: 1; }
+            to { transform: scale(2); opacity: 0; }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 4px;
+            transition: width 0.1s linear;
+        }
+
+        @media (max-width: 768px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .aim-container {
+                height: 400px;
+            }
+            
+            .aim-target {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-pattern"></div>
+    
+    <div class="container">
+        <header>
+            <img src="frid.png" alt="FRID Logo" class="logo">
+            <h1>FRID Challenge Arena</h1>
+            <p class="subtitle">Test your typing speed & aim precision!</p>
+        </header>
+
+        <div class="game-tabs">
+            <button class="tab-btn active" onclick="switchTab('typing')">⌨️ Typing Challenge</button>
+            <button class="tab-btn" onclick="switchTab('aim')">🎯 Aim Trainer</button>
+        </div>
+
+        <!-- Typing Challenge Section -->
+        <section id="typing-section" class="game-section active">
+            <div class="card">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-label">Time</div>
+                        <div class="stat-value" id="timer">0.0s</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Progress</div>
+                        <div class="stat-value" id="progress">0/10</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">WPM</div>
+                        <div class="stat-value" id="wpm">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Accuracy</div>
+                        <div class="stat-value" id="accuracy">100%</div>
+                    </div>
+                </div>
+
+                <div class="typing-area">
+                    <div class="target-text" id="target-display"></div>
+                    <input type="text" class="typing-input" id="typing-input" 
+                           placeholder="Start typing here..." autocomplete="off" spellcheck="false">
+                </div>
+
+                <div class="btn-center">
+                    <button class="btn" id="reset-btn" onclick="resetTypingGame()">🔄 Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aim Trainer Section -->
+        <section id="aim-section" class="game-section">
+            <div class="card">
+                <div class="aim-stats">
+                    <div class="aim-stat">
+                        <div class="aim-stat-label">Time Left</div>
+                        <div class="aim-stat-value" id="aim-timer">30s</div>
+                    </div>
+                    <div class="aim-stat">
+                        <div class="aim-stat-label">Hits</div>
+                        <div class="aim-stat-value" id="aim-hits">0</div>
+                    </div>
+                    <div class="aim-stat">
+                        <div class="aim-stat-label">Misses</div>
+                        <div class="aim-stat-value" id="aim-misses">0</div>
+                    </div>
+                    <div class="aim-stat">
+                        <div class="aim-stat-label">Accuracy</div>
+                        <div class="aim-stat-value" id="aim-accuracy">0%</div>
+                    </div>
+                </div>
+
+                <div class="aim-container" id="aim-container">
+                    <div class="aim-start-overlay" id="aim-overlay">
+                        <h3>Click to Start!</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">Click FRID logos as fast as you can!</p>
+                        <button class="btn" onclick="startAimGame()">🎯 Start Game</button>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="aim-progress" style="width: 100%"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Results Modal -->
+    <div class="results-overlay" id="results-overlay">
+        <div class="results-modal" id="results-modal">
+            <h2 id="results-title">🎉 Challenge Complete!</h2>
+            <div id="results-content"></div>
+            <button class="btn" onclick="closeResults()">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        // ============ TYPING GAME ============
+        const TARGET_PHRASE = "jeg elsker topdesk";
+        const REQUIRED_REPS = 10;
+        const fullTarget = (TARGET_PHRASE + " ").repeat(REQUIRED_REPS).trim();
+        
+        let typingStarted = false;
+        let startTime = null;
+        let timerInterval = null;
+        let currentIndex = 0;
+        let correctChars = 0;
+        let totalTyped = 0;
+        let completedReps = 0;
+        let keystrokeTimings = [];
+        let lastKeystrokeTime = null;
+
+        const typingInput = document.getElementById('typing-input');
+        const targetDisplay = document.getElementById('target-display');
+        const timerEl = document.getElementById('timer');
+        const progressEl = document.getElementById('progress');
+        const wpmEl = document.getElementById('wpm');
+        const accuracyEl = document.getElementById('accuracy');
+
+        function initTypingGame() {
+            renderTargetText();
+            typingInput.value = '';
+            typingInput.disabled = false;
+            typingInput.focus();
+        }
+
+        function renderTargetText() {
+            let html = '';
+            for (let i = 0; i < fullTarget.length; i++) {
+                let char = fullTarget[i];
+                let className = 'pending';
+                
+                if (i < currentIndex) {
+                    className = typingInput.value[i] === char ? 'correct' : 'incorrect';
+                } else if (i === currentIndex) {
+                    className = 'current';
+                }
+                
+                if (char === ' ') {
+                    html += `<span class="${className}">&nbsp;</span>`;
+                } else {
+                    html += `<span class="${className}">${char}</span>`;
+                }
+            }
+            targetDisplay.innerHTML = html;
+        }
+
+        typingInput.addEventListener('input', (e) => {
+            const typed = e.target.value;
+            const now = Date.now();
+            
+            // Start timer on first keystroke
+            if (!typingStarted && typed.length > 0) {
+                typingStarted = true;
+                startTime = now;
+                lastKeystrokeTime = now;
+                timerInterval = setInterval(updateTimer, 100);
+            }
+            
+            // Record keystroke timing for macro detection
+            if (lastKeystrokeTime && typingStarted) {
+                const interval = now - lastKeystrokeTime;
+                keystrokeTimings.push(interval);
+            }
+            lastKeystrokeTime = now;
+            
+            currentIndex = typed.length;
+            totalTyped = typed.length;
+            
+            // Count correct characters
+            correctChars = 0;
+            for (let i = 0; i < typed.length; i++) {
+                if (typed[i] === fullTarget[i]) {
+                    correctChars++;
+                }
+            }
+            
+            // Calculate completed reps
+            const phraseWithSpace = TARGET_PHRASE + " ";
+            completedReps = Math.floor(currentIndex / phraseWithSpace.length);
+            if (currentIndex === fullTarget.length && typed === fullTarget) {
+                completedReps = REQUIRED_REPS;
+            }
+            
+            // Update display
+            renderTargetText();
+            updateStats();
+            
+            // Check completion
+            if (currentIndex >= fullTarget.length) {
+                completeTypingGame();
+            }
+        });
+
+        function updateTimer() {
+            if (startTime) {
+                const elapsed = (Date.now() - startTime) / 1000;
+                timerEl.textContent = elapsed.toFixed(1) + 's';
+            }
+        }
+
+        function updateStats() {
+            progressEl.textContent = `${completedReps}/${REQUIRED_REPS}`;
+            
+            // Calculate WPM (words = characters / 5)
+            if (startTime) {
+                const elapsed = (Date.now() - startTime) / 1000 / 60; // minutes
+                const words = correctChars / 5;
+                const wpm = elapsed > 0 ? Math.round(words / elapsed) : 0;
+                wpmEl.textContent = wpm;
+            }
+            
+            // Calculate accuracy
+            const accuracy = totalTyped > 0 ? Math.round((correctChars / totalTyped) * 100) : 100;
+            accuracyEl.textContent = accuracy + '%';
+        }
+
+        function detectMacro() {
+            if (keystrokeTimings.length < 20) return { isMacro: false, confidence: 0 };
+            
+            // Remove first few timings (warm-up)
+            const timings = keystrokeTimings.slice(5);
+            
+            // Calculate standard deviation
+            const avg = timings.reduce((a, b) => a + b, 0) / timings.length;
+            const variance = timings.reduce((sum, t) => sum + Math.pow(t - avg, 2), 0) / timings.length;
+            const stdDev = Math.sqrt(variance);
+            
+            // Calculate coefficient of variation (CV)
+            const cv = (stdDev / avg) * 100;
+            
+            // Check for suspiciously consistent timing
+            // Human typing typically has CV > 15-20%
+            // Macros often have CV < 5%
+            const isSuspiciouslyConsistent = cv < 8;
+            
+            // Check for impossibly fast typing (< 30ms between keystrokes consistently)
+            const tooFastCount = timings.filter(t => t < 30).length;
+            const tooFastPercentage = (tooFastCount / timings.length) * 100;
+            
+            // Check for exact same intervals (very suspicious)
+            const uniqueTimings = new Set(timings.map(t => Math.round(t / 5) * 5));
+            const uniquenessRatio = uniqueTimings.size / timings.length;
+            
+            let confidence = 0;
+            let reasons = [];
+            
+            if (isSuspiciouslyConsistent) {
+                confidence += 40;
+                reasons.push(`Timing too consistent (CV: ${cv.toFixed(1)}%)`);
+            }
+            
+            if (tooFastPercentage > 50) {
+                confidence += 30;
+                reasons.push(`${tooFastPercentage.toFixed(0)}% keystrokes under 30ms`);
+            }
+            
+            if (uniquenessRatio < 0.3) {
+                confidence += 30;
+                reasons.push(`Only ${uniqueTimings.size} unique timing patterns`);
+            }
+            
+            // Super fast completion (< 15 seconds for all 10 reps is nearly impossible)
+            const totalTime = (Date.now() - startTime) / 1000;
+            if (totalTime < 15) {
+                confidence += 30;
+                reasons.push(`Completed in ${totalTime.toFixed(1)}s (impossibly fast)`);
+            }
+            
+            return {
+                isMacro: confidence >= 50,
+                confidence: Math.min(confidence, 100),
+                reasons,
+                stats: {
+                    avgInterval: avg.toFixed(1),
+                    stdDev: stdDev.toFixed(1),
+                    cv: cv.toFixed(1)
+                }
+            };
+        }
+
+        function completeTypingGame() {
+            clearInterval(timerInterval);
+            typingInput.disabled = true;
+            
+            const finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
+            const finalWPM = wpmEl.textContent;
+            const finalAccuracy = accuracyEl.textContent;
+            
+            const macroCheck = detectMacro();
+            
+            const modal = document.getElementById('results-modal');
+            const resultsContent = document.getElementById('results-content');
+            const resultsTitle = document.getElementById('results-title');
+            
+            if (macroCheck.isMacro) {
+                modal.classList.add('cheater');
+                resultsTitle.textContent = '🚨 Macro Detected!';
+                resultsContent.innerHTML = `
+                    <div class="macro-warning">
+                        <strong>⚠️ Suspicious activity detected!</strong><br>
+                        Confidence: ${macroCheck.confidence}%<br>
+                        ${macroCheck.reasons.join('<br>')}
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Time</span>
+                        <span class="result-value danger">${finalTime}s</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">WPM</span>
+                        <span class="result-value danger">${finalWPM}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Status</span>
+                        <span class="result-value danger">DISQUALIFIED</span>
+                    </div>
+                `;
+            } else {
+                modal.classList.remove('cheater');
+                resultsTitle.textContent = '🎉 Challenge Complete!';
+                resultsContent.innerHTML = `
+                    <div class="result-item">
+                        <span class="result-label">Final Time</span>
+                        <span class="result-value">${finalTime}s</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">WPM</span>
+                        <span class="result-value">${finalWPM}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Accuracy</span>
+                        <span class="result-value">${finalAccuracy}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Status</span>
+                        <span class="result-value">✅ LEGITIMATE</span>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('results-overlay').classList.add('show');
+        }
+
+        function resetTypingGame() {
+            clearInterval(timerInterval);
+            typingStarted = false;
+            startTime = null;
+            currentIndex = 0;
+            correctChars = 0;
+            totalTyped = 0;
+            completedReps = 0;
+            keystrokeTimings = [];
+            lastKeystrokeTime = null;
+            
+            timerEl.textContent = '0.0s';
+            progressEl.textContent = '0/10';
+            wpmEl.textContent = '0';
+            accuracyEl.textContent = '100%';
+            
+            initTypingGame();
+        }
+
+        // ============ AIM TRAINER ============
+        let aimGameActive = false;
+        let aimStartTime = null;
+        let aimTimerInterval = null;
+        let aimHits = 0;
+        let aimMisses = 0;
+        let currentTarget = null;
+        const AIM_DURATION = 30000; // 30 seconds
+
+        const aimContainer = document.getElementById('aim-container');
+        const aimOverlay = document.getElementById('aim-overlay');
+        const aimTimerEl = document.getElementById('aim-timer');
+        const aimHitsEl = document.getElementById('aim-hits');
+        const aimMissesEl = document.getElementById('aim-misses');
+        const aimAccuracyEl = document.getElementById('aim-accuracy');
+        const aimProgressEl = document.getElementById('aim-progress');
+
+        function startAimGame() {
+            aimGameActive = true;
+            aimStartTime = Date.now();
+            aimHits = 0;
+            aimMisses = 0;
+            
+            aimOverlay.classList.add('hidden');
+            updateAimStats();
+            
+            spawnTarget();
+            
+            aimTimerInterval = setInterval(() => {
+                const elapsed = Date.now() - aimStartTime;
+                const remaining = Math.max(0, AIM_DURATION - elapsed);
+                const seconds = Math.ceil(remaining / 1000);
+                
+                aimTimerEl.textContent = seconds + 's';
+                aimProgressEl.style.width = ((remaining / AIM_DURATION) * 100) + '%';
+                
+                if (remaining <= 0) {
+                    endAimGame();
+                }
+            }, 100);
+            
+            // Add click listener for misses
+            aimContainer.addEventListener('click', handleMiss);
+        }
+
+        function spawnTarget() {
+            if (!aimGameActive) return;
+            
+            // Remove existing target
+            if (currentTarget) {
+                currentTarget.remove();
+            }
+            
+            const target = document.createElement('img');
+            target.src = 'frid.png';
+            target.className = 'aim-target';
+            
+            // Random position
+            const containerRect = aimContainer.getBoundingClientRect();
+            const maxX = containerRect.width - 80;
+            const maxY = containerRect.height - 80;
+            
+            target.style.left = Math.random() * maxX + 'px';
+            target.style.top = Math.random() * maxY + 'px';
+            
+            target.addEventListener('click', (e) => {
+                e.stopPropagation();
+                handleHit(e);
+            });
+            
+            aimContainer.appendChild(target);
+            currentTarget = target;
+        }
+
+        function handleHit(e) {
+            if (!aimGameActive) return;
+            
+            aimHits++;
+            updateAimStats();
+            
+            // Visual feedback
+            createClickEffect(e.clientX, e.clientY, true);
+            
+            spawnTarget();
+        }
+
+        function handleMiss(e) {
+            if (!aimGameActive) return;
+            if (e.target.classList.contains('aim-target')) return;
+            if (e.target.classList.contains('btn')) return;
+            
+            aimMisses++;
+            updateAimStats();
+            
+            // Visual feedback
+            createClickEffect(e.clientX, e.clientY, false);
+        }
+
+        function createClickEffect(x, y, isHit) {
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            effect.style.left = x - 15 + 'px';
+            effect.style.top = y - 15 + 'px';
+            effect.style.borderColor = isHit ? 'var(--success)' : 'var(--danger)';
+            effect.style.position = 'fixed';
+            document.body.appendChild(effect);
+            
+            setTimeout(() => effect.remove(), 500);
+        }
+
+        function updateAimStats() {
+            aimHitsEl.textContent = aimHits;
+            aimMissesEl.textContent = aimMisses;
+            
+            const total = aimHits + aimMisses;
+            const accuracy = total > 0 ? Math.round((aimHits / total) * 100) : 0;
+            aimAccuracyEl.textContent = accuracy + '%';
+        }
+
+        function endAimGame() {
+            aimGameActive = false;
+            clearInterval(aimTimerInterval);
+            
+            if (currentTarget) {
+                currentTarget.remove();
+                currentTarget = null;
+            }
+            
+            aimContainer.removeEventListener('click', handleMiss);
+            
+            const total = aimHits + aimMisses;
+            const accuracy = total > 0 ? Math.round((aimHits / total) * 100) : 0;
+            
+            const modal = document.getElementById('results-modal');
+            const resultsContent = document.getElementById('results-content');
+            const resultsTitle = document.getElementById('results-title');
+            
+            modal.classList.remove('cheater');
+            resultsTitle.textContent = '🎯 Aim Training Complete!';
+            
+            let rating = '';
+            if (accuracy >= 90 && aimHits >= 40) rating = '🏆 ELITE SNIPER';
+            else if (accuracy >= 80 && aimHits >= 30) rating = '⭐ SHARPSHOOTER';
+            else if (accuracy >= 70 && aimHits >= 20) rating = '👍 MARKSMAN';
+            else if (accuracy >= 60) rating = '📈 IMPROVING';
+            else rating = '🎮 KEEP PRACTICING';
+            
+            resultsContent.innerHTML = `
+                <div class="accuracy-ring">${accuracy}%</div>
+                <div class="result-item">
+                    <span class="result-label">Targets Hit</span>
+                    <span class="result-value">${aimHits}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Misses</span>
+                    <span class="result-value ${aimMisses > aimHits ? 'danger' : ''}">${aimMisses}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Accuracy</span>
+                    <span class="result-value">${accuracy}%</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Rating</span>
+                    <span class="result-value">${rating}</span>
+                </div>
+            `;
+            
+            document.getElementById('results-overlay').classList.add('show');
+        }
+
+        function resetAimGame() {
+            aimOverlay.classList.remove('hidden');
+            aimTimerEl.textContent = '30s';
+            aimHitsEl.textContent = '0';
+            aimMissesEl.textContent = '0';
+            aimAccuracyEl.textContent = '0%';
+            aimProgressEl.style.width = '100%';
+        }
+
+        // ============ TAB SWITCHING ============
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.game-section').forEach(section => section.classList.remove('active'));
+            
+            if (tab === 'typing') {
+                document.querySelector('.tab-btn:first-child').classList.add('active');
+                document.getElementById('typing-section').classList.add('active');
+                typingInput.focus();
+            } else {
+                document.querySelector('.tab-btn:last-child').classList.add('active');
+                document.getElementById('aim-section').classList.add('active');
+            }
+        }
+
+        function closeResults() {
+            document.getElementById('results-overlay').classList.remove('show');
+            
+            // Reset appropriate game
+            if (document.getElementById('typing-section').classList.contains('active')) {
+                resetTypingGame();
+            } else {
+                resetAimGame();
+            }
+        }
+
+        // Initialize
+        initTypingGame();
+    </script>
+</body>
+</html>
+
