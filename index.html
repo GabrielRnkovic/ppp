@@ -1301,6 +1301,19 @@
             const cell = e.currentTarget;
             const index = parseInt(cell.dataset.index);
             
+            // Miss - clicked empty cell
+            if (!activeTiles.has(index)) {
+                frenzyCombo = 1;
+                updateFrenzyStats();
+                
+                // Visual feedback for miss
+                cell.style.background = 'rgba(231, 76, 60, 0.3)';
+                setTimeout(() => {
+                    cell.style.background = '';
+                }, 200);
+                return;
+            }
+            
             if (activeTiles.has(index)) {
                 // Hit!
                 const now = Date.now();
