@@ -642,6 +642,15 @@
             targetDisplay.innerHTML = html;
         }
 
+        // Prevent pasting and dropping text
+        typingInput.addEventListener('paste', (e) => {
+            e.preventDefault();
+        });
+        
+        typingInput.addEventListener('drop', (e) => {
+            e.preventDefault();
+        });
+
         typingInput.addEventListener('input', (e) => {
             const typed = e.target.value;
             const now = Date.now();
