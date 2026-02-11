@@ -780,6 +780,616 @@
             margin-bottom: 0;
         }
 
+        .cisco-answer-reveal {
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .cisco-answer-reveal.show {
+            display: block;
+        }
+
+        .info-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            background: rgba(72, 52, 212, 0.2);
+            color: var(--primary-light);
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-style: italic;
+            font-family: 'Georgia', serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .info-btn.clicked {
+            background: var(--primary);
+            color: white;
+        }
+
+        .answer-box {
+            display: none;
+            margin-top: 15px;
+            background: rgba(72, 52, 212, 0.15);
+            border: 1px solid rgba(72, 52, 212, 0.3);
+            border-radius: 12px;
+            padding: 15px 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .answer-box.show {
+            display: block;
+        }
+
+        .answer-box h4 {
+            color: var(--primary-light);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .answer-box code {
+            display: block;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            color: #3fb950;
+            font-size: 0.95rem;
+        }
+
+        .answer-box code:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Cisco Match Game Styles */
+        .match-header {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .match-stat {
+            text-align: center;
+        }
+
+        .match-stat-label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .match-stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-light);
+        }
+
+        .match-instruction {
+            text-align: center;
+            padding: 15px;
+            background: rgba(72, 52, 212, 0.1);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        .match-container {
+            display: grid;
+            grid-template-columns: 1fr 120px 1fr;
+            gap: 10px;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .match-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .match-column h4 {
+            text-align: center;
+            color: var(--primary-light);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .match-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .match-item {
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(72, 52, 212, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .match-item:hover:not(.matched):not(.disabled) {
+            border-color: var(--primary);
+            background: rgba(72, 52, 212, 0.2);
+        }
+
+        .match-item.selected {
+            border-color: var(--primary);
+            background: rgba(72, 52, 212, 0.3);
+            box-shadow: 0 0 15px rgba(72, 52, 212, 0.4);
+        }
+
+        .match-item.matched {
+            border-color: var(--success);
+            background: rgba(46, 204, 113, 0.2);
+            cursor: default;
+        }
+
+        .match-item.error {
+            animation: matchError 0.5s ease;
+        }
+
+        @keyframes matchError {
+            0%, 100% { border-color: var(--danger); background: rgba(231, 76, 60, 0.2); }
+            50% { border-color: var(--danger); background: rgba(231, 76, 60, 0.4); }
+        }
+
+        .match-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .match-item .match-letter {
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            color: white;
+        }
+
+        .match-item.matched .match-letter {
+            background: var(--success);
+        }
+
+        .match-lines {
+            position: relative;
+        }
+
+        #match-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #match-svg line {
+            stroke: var(--success);
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
+
+        .match-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 15, 26, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            z-index: 10;
+        }
+
+        .match-overlay.hidden {
+            display: none;
+        }
+
+        .match-overlay h3 {
+            font-size: 1.8rem;
+            color: var(--primary-light);
+            margin-bottom: 15px;
+        }
+
+        .match-overlay p {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .match-check {
+            color: var(--success);
+            margin-left: 10px;
+        }
+
+        .match-x {
+            color: var(--danger);
+            margin-left: 10px;
+        }
+
+        /* Windows Setup Styles */
+        .windows-card {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .windows-timer-bar {
+            background: rgba(0, 120, 212, 0.2);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(0, 120, 212, 0.3);
+        }
+
+        .windows-timer-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .windows-timer {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0078d4;
+        }
+
+        .windows-container {
+            height: 550px;
+            background: linear-gradient(135deg, #0078d4 0%, #00bcf2 50%, #00b294 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .windows-screen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #f3f3f3;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 700px;
+            max-height: 90%;
+            overflow: hidden;
+            font-family: 'Segoe UI', 'Outfit', sans-serif;
+            color: #1a1a1a;
+        }
+
+        .windows-welcome {
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .windows-logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .windows-welcome h2 {
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .windows-welcome p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .windows-controls {
+            margin: 20px 0 30px;
+        }
+
+        .windows-controls kbd {
+            background: #e1e1e1;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin: 0 3px;
+            border: 1px solid #ccc;
+            font-family: inherit;
+        }
+
+        .windows-btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            margin: 5px;
+        }
+
+        .windows-btn.primary {
+            background: #0078d4;
+            color: white;
+        }
+
+        .windows-btn.primary:hover, .windows-btn.primary:focus {
+            background: #106ebe;
+        }
+
+        .windows-btn.primary.focused {
+            outline: 3px solid #005a9e;
+            outline-offset: 2px;
+            background: #005a9e;
+            box-shadow: 0 0 10px rgba(0, 120, 212, 0.5);
+        }
+
+        .windows-btn.secondary {
+            background: #e1e1e1;
+            color: #1a1a1a;
+        }
+
+        .windows-btn.secondary:hover, .windows-btn.secondary:focus {
+            background: #d1d1d1;
+        }
+
+        .windows-btn.secondary.focused {
+            outline: 3px solid #666;
+            outline-offset: 2px;
+        }
+
+        .windows-btn.link {
+            background: transparent;
+            color: #0078d4;
+            text-decoration: underline;
+            padding: 8px 16px;
+        }
+
+        .windows-btn.link:hover {
+            color: #106ebe;
+        }
+
+        .windows-header {
+            padding: 40px 40px 20px;
+        }
+
+        .windows-header h2 {
+            color: #1a1a1a;
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .windows-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .windows-content {
+            padding: 0 40px 30px;
+        }
+
+        .windows-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+        .windows-option {
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #e1e1e1;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: left;
+        }
+
+        .windows-option:hover {
+            border-color: #0078d4;
+            background: #f0f8ff;
+        }
+
+        .windows-option.selected {
+            border-color: #0078d4;
+            background: #e6f2ff;
+        }
+
+        .windows-option.focused {
+            border-color: #0078d4;
+            background: #cce4ff;
+            outline: 2px solid #0078d4;
+            outline-offset: -2px;
+        }
+
+        .windows-option.selected.focused {
+            background: #b3d7ff;
+        }
+
+        .windows-option .option-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .windows-option .option-subtitle {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .windows-footer {
+            padding: 20px 40px;
+            background: #fafafa;
+            border-top: 1px solid #e1e1e1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .windows-footer-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .windows-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e1e1e1;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            margin-bottom: 10px;
+        }
+
+        .windows-checkbox:hover {
+            border-color: #0078d4;
+        }
+
+        .windows-checkbox.focused {
+            border-color: #0078d4;
+            background: #f0f8ff;
+        }
+
+        .windows-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: #0078d4;
+        }
+
+        .windows-checkbox-label {
+            flex: 1;
+        }
+
+        .windows-checkbox-label .title {
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 3px;
+        }
+
+        .windows-checkbox-label .desc {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .windows-privacy-scroll {
+            max-height: 220px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .windows-privacy-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .windows-privacy-scroll::-webkit-scrollbar-track {
+            background: #e1e1e1;
+            border-radius: 4px;
+        }
+
+        .windows-privacy-scroll::-webkit-scrollbar-thumb {
+            background: #0078d4;
+            border-radius: 4px;
+        }
+
+        .windows-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            margin-bottom: 15px;
+            transition: border-color 0.2s;
+        }
+
+        .windows-input:focus {
+            outline: none;
+            border-color: #0078d4;
+        }
+
+        .windows-progress {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px;
+            background: #fafafa;
+            border-top: 1px solid #e1e1e1;
+        }
+
+        .windows-progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d1d1d1;
+        }
+
+        .windows-progress-dot.active {
+            background: #0078d4;
+        }
+
+        .windows-progress-dot.completed {
+            background: #107c10;
+        }
+
+        .windows-loading {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .windows-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e1e1e1;
+            border-top-color: #0078d4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
             .stats-row {
                 grid-template-columns: repeat(2, 1fr);
@@ -821,6 +1431,32 @@
                 font-size: 0.85rem;
                 min-height: 150px;
             }
+            
+            .windows-container {
+                height: 450px;
+            }
+            
+            .windows-screen {
+                padding: 20px;
+            }
+            
+            .windows-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .match-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .match-lines {
+                display: none;
+            }
+            
+            .match-item {
+                font-size: 0.8rem;
+                padding: 12px 15px;
+            }
         }
     </style>
 </head>
@@ -839,6 +1475,8 @@
             <button class="tab-btn" onclick="switchTab('aim')">🎯 Aim Trainer</button>
             <button class="tab-btn" onclick="switchTab('frenzy')">⚡ Tile Frenzy</button>
             <button class="tab-btn" onclick="switchTab('cisco')">💻 Cisco CLI</button>
+            <button class="tab-btn" onclick="switchTab('ciscomatch')">🔗 Cisco Match</button>
+            <button class="tab-btn" onclick="switchTab('windows')">🪟 Windows Setup</button>
         </div>
 
         <!-- Typing Challenge Section -->
@@ -901,6 +1539,7 @@
                     <div class="aim-start-overlay" id="aim-overlay">
                         <h3>Click to Start!</h3>
                         <p style="color: var(--text-muted); margin-bottom: 20px;">Click FRID logos as fast as you can!</p>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Press <kbd style="background: var(--bg-darker); padding: 3px 8px; border-radius: 4px;">R</kbd> to restart during game</p>
                         <button class="btn" onclick="startAimGame()">🎯 Start Game</button>
                     </div>
                 </div>
@@ -948,6 +1587,7 @@
                     <div class="aim-start-overlay" id="frenzy-overlay">
                         <h3>⚡ Tile Frenzy!</h3>
                         <p style="color: var(--text-muted); margin-bottom: 20px;">4 tiles appear at once - click them fast!</p>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Press <kbd style="background: var(--bg-darker); padding: 3px 8px; border-radius: 4px;">R</kbd> to restart during game</p>
                         <button class="btn" onclick="startFrenzyGame()">⚡ Start Frenzy</button>
                     </div>
                 </div>
@@ -999,10 +1639,89 @@
                     </div>
 
                     <div class="cisco-hint" id="cisco-hint"></div>
+                    
+                    <div class="cisco-answer-reveal" id="cisco-answer-reveal">
+                        <button class="info-btn" id="info-btn" onclick="revealAnswer()" title="Show Answer">
+                            <span>i</span>
+                        </button>
+                        <div class="answer-box" id="answer-box">
+                            <h4>Expected Commands:</h4>
+                            <div id="answer-commands"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="btn-center">
                     <button class="btn" id="cisco-start-btn" onclick="startCiscoGame()">🚀 Start Challenge</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cisco Match Section -->
+        <section id="ciscomatch-section" class="game-section">
+            <div class="card">
+                <div class="match-header">
+                    <div class="match-stat">
+                        <span class="match-stat-label">Time</span>
+                        <span class="match-stat-value" id="match-timer">0.0s</span>
+                    </div>
+                    <div class="match-stat">
+                        <span class="match-stat-label">Matched</span>
+                        <span class="match-stat-value" id="match-count">0/6</span>
+                    </div>
+                    <div class="match-stat">
+                        <span class="match-stat-label">Errors</span>
+                        <span class="match-stat-value" id="match-errors">0</span>
+                    </div>
+                </div>
+
+                <div class="match-instruction">
+                    <p>Match the command with the device mode at which the command is entered.</p>
+                </div>
+
+                <div class="match-container" id="match-container">
+                    <div class="match-column">
+                        <h4>Commands</h4>
+                        <div class="match-items" id="match-commands"></div>
+                    </div>
+                    
+                    <div class="match-lines">
+                        <svg id="match-svg" width="100%" height="100%"></svg>
+                    </div>
+                    
+                    <div class="match-column">
+                        <h4>Device Modes</h4>
+                        <div class="match-items" id="match-modes"></div>
+                    </div>
+                </div>
+
+                <div class="match-overlay" id="match-overlay">
+                    <h3>🔗 Cisco Command Matching</h3>
+                    <p>Click a command, then click the matching device mode!</p>
+                    <button class="btn" onclick="startMatchGame()">Start Matching</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Windows Setup Section -->
+        <section id="windows-section" class="game-section">
+            <div class="card windows-card">
+                <div class="windows-timer-bar">
+                    <span class="windows-timer-label">⏱️ Time:</span>
+                    <span class="windows-timer" id="windows-timer">0.0s</span>
+                </div>
+
+                <div class="windows-container" id="windows-container">
+                    <div class="windows-screen" id="windows-screen">
+                        <!-- Windows setup screens will be rendered here -->
+                        <div class="windows-welcome">
+                            <div class="windows-logo">🪟</div>
+                            <h2>Windows 11 Setup Speedrun</h2>
+                            <p>Navigate through the Windows setup as fast as possible!</p>
+                            <p class="windows-controls">Use <kbd>Tab</kbd> <kbd>Enter</kbd> <kbd>↑</kbd> <kbd>↓</kbd> or Mouse</p>
+                            <button class="windows-btn primary" onclick="startWindowsGame()">Start Setup</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1688,7 +2407,7 @@
             if (frenzyScore >= 2000) rating = '🔥 FRENZY MASTER';
             else if (frenzyScore >= 1500) rating = '⚡ LIGHTNING FAST';
             else if (frenzyScore >= 1000) rating = '🌟 TILE CRUSHER';
-            else if (frenzyScore >= 500) rating = '👍 GETTING THERE';
+            else if (frenzyScore >= 500) rating = '👍 Legg opp';
             else rating = '🎮 KEEP CLICKING';
             
             resultsContent.innerHTML = `
@@ -1800,6 +2519,7 @@
         let currentCommandIndex = 0;
         let taskTimes = [];
         let totalErrors = 0;
+        let answerRevealTimeout = null;
 
         const ciscoInput = document.getElementById('cisco-input');
         const ciscoTimerEl = document.getElementById('cisco-timer');
@@ -1811,6 +2531,10 @@
         const terminalOutput = document.getElementById('terminal-output');
         const ciscoHint = document.getElementById('cisco-hint');
         const ciscoStartBtn = document.getElementById('cisco-start-btn');
+        const answerReveal = document.getElementById('cisco-answer-reveal');
+        const answerBox = document.getElementById('answer-box');
+        const answerCommands = document.getElementById('answer-commands');
+        const infoBtn = document.getElementById('info-btn');
 
         function startCiscoGame() {
             ciscoGameActive = true;
@@ -1850,8 +2574,37 @@
             // Hide hint
             ciscoHint.classList.remove('show');
             
+            // Hide and reset answer reveal
+            answerReveal.classList.remove('show');
+            answerBox.classList.remove('show');
+            infoBtn.classList.remove('clicked');
+            
+            // Clear any existing timeout
+            if (answerRevealTimeout) {
+                clearTimeout(answerRevealTimeout);
+            }
+            
+            // Populate answer commands
+            const commandsHtml = task.commands.map(cmd => {
+                const cmdText = Array.isArray(cmd.input) ? cmd.input[0] : cmd.input;
+                return `<code>${cmdText}</code>`;
+            }).join('');
+            answerCommands.innerHTML = commandsHtml;
+            
+            // Show info button after 10 seconds
+            answerRevealTimeout = setTimeout(() => {
+                if (ciscoGameActive && currentTask < ciscoTasks.length) {
+                    answerReveal.classList.add('show');
+                }
+            }, 10000);
+            
             ciscoInput.value = '';
             ciscoInput.focus();
+        }
+        
+        function revealAnswer() {
+            infoBtn.classList.add('clicked');
+            answerBox.classList.toggle('show');
         }
 
         ciscoInput.addEventListener('keydown', (e) => {
@@ -1946,6 +2699,12 @@
             clearInterval(ciscoTimerInterval);
             ciscoInput.disabled = true;
             
+            // Clear answer reveal timeout
+            if (answerRevealTimeout) {
+                clearTimeout(answerRevealTimeout);
+                answerRevealTimeout = null;
+            }
+            
             const totalTime = taskTimes.reduce((a, b) => a + b, 0);
             const avgTime = totalTime / taskTimes.length;
             
@@ -1998,7 +2757,775 @@
             ciscoInput.value = '';
             ciscoInput.disabled = true;
             ciscoHint.classList.remove('show');
+            
+            // Hide answer reveal
+            answerReveal.classList.remove('show');
+            answerBox.classList.remove('show');
+            infoBtn.classList.remove('clicked');
+            if (answerRevealTimeout) {
+                clearTimeout(answerRevealTimeout);
+                answerRevealTimeout = null;
+            }
         }
+
+        // ============ CISCO MATCH GAME ============
+        const matchPairs = [
+            { command: 'copy running-config startup-config', mode: 'R1#', modeLabel: 'Privileged EXEC' },
+            { command: 'enable', mode: 'R1>', modeLabel: 'User EXEC' },
+            { command: 'login', mode: 'R1(config-line)#', modeLabel: 'Line Config' },
+            { command: 'service password-encryption', mode: 'R1(config)#', modeLabel: 'Global Config' },
+            { command: 'ip address 192.168.4.4 255.255.255.0', mode: 'R1(config-if)#', modeLabel: 'Interface Config' },
+            { command: 'switchport mode access', mode: 'S1(config-if)#', modeLabel: 'Switch Interface' }
+        ];
+
+        let matchGameActive = false;
+        let matchStartTime = null;
+        let matchTimerInterval = null;
+        let matchedCount = 0;
+        let matchErrors = 0;
+        let selectedCommand = null;
+        let selectedMode = null;
+        let matchConnections = [];
+        let shuffledCommands = [];
+        let shuffledModes = [];
+
+        const matchTimerEl = document.getElementById('match-timer');
+        const matchCountEl = document.getElementById('match-count');
+        const matchErrorsEl = document.getElementById('match-errors');
+        const matchCommandsEl = document.getElementById('match-commands');
+        const matchModesEl = document.getElementById('match-modes');
+        const matchOverlay = document.getElementById('match-overlay');
+        const matchSvg = document.getElementById('match-svg');
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function startMatchGame() {
+            matchGameActive = true;
+            matchStartTime = Date.now();
+            matchedCount = 0;
+            matchErrors = 0;
+            selectedCommand = null;
+            selectedMode = null;
+            matchConnections = [];
+
+            matchOverlay.classList.add('hidden');
+            
+            // Shuffle both arrays independently
+            shuffledCommands = shuffleArray(matchPairs.map((p, i) => ({ ...p, originalIndex: i })));
+            shuffledModes = shuffleArray(matchPairs.map((p, i) => ({ ...p, originalIndex: i })));
+            
+            renderMatchGame();
+            
+            matchTimerInterval = setInterval(() => {
+                const elapsed = (Date.now() - matchStartTime) / 1000;
+                matchTimerEl.textContent = elapsed.toFixed(1) + 's';
+            }, 100);
+        }
+
+        function renderMatchGame() {
+            // Render commands
+            matchCommandsEl.innerHTML = shuffledCommands.map((item, index) => {
+                const letter = String.fromCharCode(65 + index);
+                const matched = matchConnections.some(c => c.commandIndex === item.originalIndex);
+                return `
+                    <div class="match-item ${matched ? 'matched' : ''} ${selectedCommand === index ? 'selected' : ''}" 
+                         data-type="command" data-index="${index}" data-original="${item.originalIndex}"
+                         onclick="selectMatchItem('command', ${index})">
+                        <span class="match-letter">${letter}</span>
+                        ${item.command}
+                        ${matched ? '<span class="match-check">✓</span>' : ''}
+                    </div>
+                `;
+            }).join('');
+
+            // Render modes
+            matchModesEl.innerHTML = shuffledModes.map((item, index) => {
+                const letter = String.fromCharCode(65 + index);
+                const matched = matchConnections.some(c => c.modeIndex === item.originalIndex);
+                return `
+                    <div class="match-item ${matched ? 'matched' : ''} ${selectedMode === index ? 'selected' : ''}" 
+                         data-type="mode" data-index="${index}" data-original="${item.originalIndex}"
+                         onclick="selectMatchItem('mode', ${index})">
+                        <span class="match-letter">${letter}</span>
+                        <div>
+                            <div style="color: var(--success); font-weight: 600;">${item.mode}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 3px;">${item.modeLabel}</div>
+                        </div>
+                        ${matched ? '<span class="match-check">✓</span>' : ''}
+                    </div>
+                `;
+            }).join('');
+
+            updateMatchStats();
+            drawMatchLines();
+        }
+
+        function selectMatchItem(type, index) {
+            if (!matchGameActive) return;
+
+            const items = type === 'command' ? shuffledCommands : shuffledModes;
+            const originalIndex = items[index].originalIndex;
+            
+            // Check if already matched
+            if (type === 'command' && matchConnections.some(c => c.commandIndex === originalIndex)) return;
+            if (type === 'mode' && matchConnections.some(c => c.modeIndex === originalIndex)) return;
+
+            if (type === 'command') {
+                selectedCommand = selectedCommand === index ? null : index;
+            } else {
+                selectedMode = selectedMode === index ? null : index;
+            }
+
+            // Check if both selected
+            if (selectedCommand !== null && selectedMode !== null) {
+                checkMatch();
+            } else {
+                renderMatchGame();
+            }
+        }
+
+        function checkMatch() {
+            const commandOriginal = shuffledCommands[selectedCommand].originalIndex;
+            const modeOriginal = shuffledModes[selectedMode].originalIndex;
+
+            if (commandOriginal === modeOriginal) {
+                // Correct match!
+                matchConnections.push({
+                    commandIndex: commandOriginal,
+                    modeIndex: modeOriginal,
+                    commandDisplayIndex: selectedCommand,
+                    modeDisplayIndex: selectedMode
+                });
+                matchedCount++;
+
+                selectedCommand = null;
+                selectedMode = null;
+
+                renderMatchGame();
+
+                // Check if all matched
+                if (matchedCount >= matchPairs.length) {
+                    setTimeout(() => endMatchGame(), 500);
+                }
+            } else {
+                // Wrong match
+                matchErrors++;
+                
+                // Show error animation
+                const commandEl = matchCommandsEl.children[selectedCommand];
+                const modeEl = matchModesEl.children[selectedMode];
+                
+                commandEl.classList.add('error');
+                modeEl.classList.add('error');
+                
+                setTimeout(() => {
+                    commandEl.classList.remove('error');
+                    modeEl.classList.remove('error');
+                    selectedCommand = null;
+                    selectedMode = null;
+                    renderMatchGame();
+                }, 500);
+
+                updateMatchStats();
+            }
+        }
+
+        function drawMatchLines() {
+            matchSvg.innerHTML = '';
+            
+            matchConnections.forEach(conn => {
+                const commandEl = matchCommandsEl.querySelector(`[data-original="${conn.commandIndex}"]`);
+                const modeEl = matchModesEl.querySelector(`[data-original="${conn.modeIndex}"]`);
+                
+                if (commandEl && modeEl) {
+                    const containerRect = document.getElementById('match-container').getBoundingClientRect();
+                    const cmdRect = commandEl.getBoundingClientRect();
+                    const modeRect = modeEl.getBoundingClientRect();
+                    
+                    const x1 = cmdRect.right - containerRect.left;
+                    const y1 = cmdRect.top + cmdRect.height / 2 - containerRect.top;
+                    const x2 = modeRect.left - containerRect.left;
+                    const y2 = modeRect.top + modeRect.height / 2 - containerRect.top;
+                    
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', x1);
+                    line.setAttribute('y1', y1);
+                    line.setAttribute('x2', x2);
+                    line.setAttribute('y2', y2);
+                    matchSvg.appendChild(line);
+                }
+            });
+        }
+
+        function updateMatchStats() {
+            matchCountEl.textContent = `${matchedCount}/${matchPairs.length}`;
+            matchErrorsEl.textContent = matchErrors;
+            
+            if (matchErrors >= 3) {
+                matchErrorsEl.style.color = 'var(--danger)';
+            } else {
+                matchErrorsEl.style.color = 'var(--primary-light)';
+            }
+        }
+
+        function endMatchGame() {
+            matchGameActive = false;
+            clearInterval(matchTimerInterval);
+
+            const totalTime = (Date.now() - matchStartTime) / 1000;
+
+            const modal = document.getElementById('results-modal');
+            const resultsContent = document.getElementById('results-content');
+            const resultsTitle = document.getElementById('results-title');
+
+            modal.classList.remove('cheater');
+            resultsTitle.textContent = '🔗 Matching Complete!';
+
+            let rating = '';
+            if (totalTime < 10 && matchErrors === 0) rating = '🏆 CISCO MASTER';
+            else if (totalTime < 15 && matchErrors <= 1) rating = '⭐ NETWORK PRO';
+            else if (totalTime < 20 && matchErrors <= 2) rating = '👍 WELL DONE';
+            else if (totalTime < 30) rating = '📚 KEEP LEARNING';
+            else rating = '🎮 PRACTICE MORE';
+
+            const accuracy = Math.round((matchPairs.length / (matchPairs.length + matchErrors)) * 100);
+
+            resultsContent.innerHTML = `
+                <div class="accuracy-ring">${accuracy}%</div>
+                <div class="result-item">
+                    <span class="result-label">Total Time</span>
+                    <span class="result-value">${totalTime.toFixed(2)}s</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Correct Matches</span>
+                    <span class="result-value">${matchPairs.length}/${matchPairs.length}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Errors</span>
+                    <span class="result-value ${matchErrors > 2 ? 'danger' : ''}">${matchErrors}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Rating</span>
+                    <span class="result-value">${rating}</span>
+                </div>
+            `;
+
+            document.getElementById('results-overlay').classList.add('show');
+        }
+
+        function resetMatchGame() {
+            matchTimerEl.textContent = '0.0s';
+            matchCountEl.textContent = '0/6';
+            matchErrorsEl.textContent = '0';
+            matchErrorsEl.style.color = 'var(--primary-light)';
+            matchOverlay.classList.remove('hidden');
+            matchCommandsEl.innerHTML = '';
+            matchModesEl.innerHTML = '';
+            matchSvg.innerHTML = '';
+        }
+
+        // Redraw lines on window resize
+        window.addEventListener('resize', () => {
+            if (matchGameActive) {
+                drawMatchLines();
+            }
+        });
+
+        // ============ WINDOWS SETUP GAME ============
+        const windowsScreens = [
+            {
+                id: 'region',
+                title: 'Is this the right country or region?',
+                subtitle: 'Select your country or region',
+                type: 'select',
+                options: [
+                    { id: 'us', title: 'United States' },
+                    { id: 'uk', title: 'United Kingdom' },
+                    { id: 'dk', title: 'Denmark' },
+                    { id: 'de', title: 'Germany' },
+                    { id: 'fr', title: 'France' },
+                    { id: 'nl', title: 'Netherlands' }
+                ],
+                nextBtn: 'Yes'
+            },
+            {
+                id: 'keyboard',
+                title: 'Is this the right keyboard layout?',
+                subtitle: 'Select your keyboard layout',
+                type: 'select',
+                options: [
+                    { id: 'us', title: 'US' },
+                    { id: 'uk', title: 'United Kingdom' },
+                    { id: 'dk', title: 'Danish' },
+                    { id: 'de', title: 'German' }
+                ],
+                nextBtn: 'Yes'
+            },
+            {
+                id: 'keyboard2',
+                title: 'Want to add a second keyboard layout?',
+                subtitle: 'You can add another keyboard layout if you use multiple languages',
+                type: 'choice',
+                nextBtn: 'Skip'
+            },
+            {
+                id: 'network',
+                title: "Let's connect you to a network",
+                subtitle: '',
+                type: 'network',
+                networks: [
+                    { id: 'frid-corp', name: 'FRID-Corporate', secured: true, signal: 3 },
+                    { id: 'frid-guest', name: 'FRID-Guest', secured: true, signal: 2 },
+                    { id: 'frid-iot', name: 'FRID-IoT', secured: true, signal: 3 },
+                    { id: 'frid-5g', name: 'FRID-5G', secured: true, signal: 1 }
+                ],
+                nextBtn: 'Connect'
+            },
+            {
+                id: 'license',
+                title: 'License Agreement',
+                subtitle: 'Please review the Microsoft Software License Terms',
+                type: 'license',
+                nextBtn: 'Accept'
+            },
+            {
+                id: 'name',
+                title: "Let's name your device",
+                subtitle: 'Make it yours with a unique name',
+                type: 'input',
+                placeholder: 'Enter device name',
+                nextBtn: 'Next'
+            },
+            {
+                id: 'account',
+                title: 'How would you like to set up this device?',
+                subtitle: 'Choose your account type',
+                type: 'account',
+                options: [
+                    { id: 'personal', title: 'Set up for personal use', subtitle: 'Use your Microsoft account' },
+                    { id: 'work', title: 'Set up for work or school', subtitle: 'Join your organization\'s network' }
+                ],
+                nextBtn: 'Next'
+            },
+            {
+                id: 'privacy',
+                title: 'Choose privacy settings',
+                subtitle: 'Review and customize your privacy preferences',
+                type: 'privacy',
+                settings: [
+                    { id: 'location', title: 'Location', desc: 'Let apps use your location' },
+                    { id: 'diagnostic', title: 'Diagnostic data', desc: 'Send optional data to Microsoft' },
+                    { id: 'inking', title: 'Inking & typing', desc: 'Improve inking and typing recognition' },
+                    { id: 'tailored', title: 'Tailored experiences', desc: 'Get tips and recommendations' },
+                    { id: 'advertising', title: 'Advertising ID', desc: 'Get personalized ads' }
+                ],
+                nextBtn: 'Accept'
+            }
+        ];
+
+        let windowsGameActive = false;
+        let windowsStartTime = null;
+        let windowsTimerInterval = null;
+        let windowsCurrentScreen = 0;
+        let windowsFocusIndex = 0;
+        let windowsSelectedOption = null;
+        let windowsDeviceName = '';
+        let windowsRequiredNetwork = null;
+        let windowsNetworkError = false;
+
+        const windowsScreen = document.getElementById('windows-screen');
+        const windowsTimerEl = document.getElementById('windows-timer');
+
+        function startWindowsGame() {
+            windowsGameActive = true;
+            windowsStartTime = Date.now();
+            windowsCurrentScreen = 0;
+            windowsFocusIndex = 0;
+            windowsSelectedOption = null;
+            windowsDeviceName = '';
+            windowsNetworkError = false;
+            
+            // Pick a random required network
+            const networks = windowsScreens.find(s => s.id === 'network').networks;
+            windowsRequiredNetwork = networks[Math.floor(Math.random() * networks.length)].id;
+            
+            windowsTimerInterval = setInterval(() => {
+                const elapsed = (Date.now() - windowsStartTime) / 1000;
+                windowsTimerEl.textContent = elapsed.toFixed(1) + 's';
+            }, 100);
+            
+            renderWindowsScreen();
+            document.addEventListener('keydown', handleWindowsKeydown);
+        }
+
+        function renderWindowsScreen() {
+            if (windowsCurrentScreen >= windowsScreens.length) {
+                showWindowsComplete();
+                return;
+            }
+
+            const screen = windowsScreens[windowsCurrentScreen];
+            let html = '';
+
+            // Progress dots
+            const progressHtml = windowsScreens.map((s, i) => {
+                let cls = 'windows-progress-dot';
+                if (i < windowsCurrentScreen) cls += ' completed';
+                else if (i === windowsCurrentScreen) cls += ' active';
+                return `<div class="${cls}"></div>`;
+            }).join('');
+
+            // Get subtitle - special case for network
+            let subtitle = screen.subtitle;
+            if (screen.type === 'network') {
+                const requiredNet = screen.networks.find(n => n.id === windowsRequiredNetwork);
+                subtitle = `Connect to: <strong style="color: #0078d4;">${requiredNet.name}</strong>`;
+            }
+
+            html += `<div class="windows-header">
+                <h2>${screen.title}</h2>
+                <p>${subtitle}</p>
+            </div>`;
+
+            html += `<div class="windows-content">`;
+
+            if (screen.type === 'select') {
+                html += `<div class="windows-options">`;
+                screen.options.forEach((opt, i) => {
+                    const selected = windowsSelectedOption === opt.id;
+                    const focused = windowsFocusIndex === i;
+                    html += `<div class="windows-option ${selected ? 'selected' : ''} ${focused ? 'focused' : ''}" 
+                                 data-option="${opt.id}" onclick="selectWindowsOption('${opt.id}')">
+                        <div class="option-title">${opt.title}</div>
+                    </div>`;
+                });
+                html += `</div>`;
+            } else if (screen.type === 'choice') {
+                html += `<p style="color: #666; margin-bottom: 20px;">Most users skip this step.</p>`;
+            } else if (screen.type === 'network') {
+                if (windowsNetworkError) {
+                    html += `<div style="background: #fff3cd; border: 1px solid #ffc107; color: #856404; padding: 10px 15px; border-radius: 6px; margin-bottom: 15px;">
+                        ⚠️ Wrong network! Please select the correct one.
+                    </div>`;
+                }
+                html += `<div class="windows-options" style="grid-template-columns: 1fr;">`;
+                screen.networks.forEach((net, i) => {
+                    const focused = windowsFocusIndex === i;
+                    const selected = windowsSelectedOption === net.id;
+                    const signal = '📶'.repeat(net.signal);
+                    html += `<div class="windows-option ${selected ? 'selected' : ''} ${focused ? 'focused' : ''}" 
+                                 data-option="${net.id}" onclick="selectWindowsOption('${net.id}')">
+                        <div class="option-title">${net.name} ${net.secured ? '🔒' : ''}</div>
+                        <div class="option-subtitle">${signal}</div>
+                    </div>`;
+                });
+                html += `</div>`;
+            } else if (screen.type === 'license') {
+                html += `<div style="background: white; border: 1px solid #ddd; border-radius: 4px; padding: 15px; height: 150px; overflow-y: auto; font-size: 0.85rem; color: #666; margin-bottom: 15px;">
+                    <p><strong>MICROSOFT SOFTWARE LICENSE TERMS</strong></p>
+                    <p>WINDOWS OPERATING SYSTEM</p>
+                    <p>IF YOU LIVE IN (OR IF YOUR PRINCIPAL PLACE OF BUSINESS IS IN) THE UNITED STATES, PLEASE READ THE BINDING ARBITRATION CLAUSE AND CLASS ACTION WAIVER IN SECTION 11...</p>
+                    <p>These license terms are an agreement between you and Microsoft Corporation (or one of its affiliates). They apply to the software named above and any Microsoft services or software updates...</p>
+                    <p>By accepting this agreement or using the software, you agree to all of these terms...</p>
+                </div>`;
+            } else if (screen.type === 'input') {
+                html += `<input type="text" class="windows-input" 
+                                id="windows-name-input" placeholder="${screen.placeholder}" 
+                                value="${windowsDeviceName}" oninput="windowsDeviceName = this.value"
+                                onkeydown="if(event.key==='Enter'){event.preventDefault();windowsNext();}">`;
+            } else if (screen.type === 'account') {
+                html += `<div class="windows-options" style="grid-template-columns: 1fr;">`;
+                screen.options.forEach((opt, i) => {
+                    const focused = windowsFocusIndex === i;
+                    const selected = windowsSelectedOption === opt.id;
+                    html += `<div class="windows-option ${selected ? 'selected' : ''} ${focused ? 'focused' : ''}" 
+                                 data-option="${opt.id}" onclick="selectWindowsOption('${opt.id}')">
+                        <div class="option-title">${opt.title}</div>
+                        <div class="option-subtitle">${opt.subtitle}</div>
+                    </div>`;
+                });
+                html += `</div>`;
+            } else if (screen.type === 'privacy') {
+                html += `<div class="windows-privacy-scroll">`;
+                screen.settings.forEach((setting, i) => {
+                    const focused = windowsFocusIndex === i;
+                    html += `<div class="windows-checkbox ${focused ? 'focused' : ''}" onclick="toggleWindowsCheckbox(${i})">
+                        <input type="checkbox" id="priv-${setting.id}">
+                        <div class="windows-checkbox-label">
+                            <div class="title">${setting.title}</div>
+                            <div class="desc">${setting.desc}</div>
+                        </div>
+                    </div>`;
+                });
+                html += `</div>`;
+            }
+
+            html += `</div>`;
+
+            // Determine if button is focused
+            let buttonFocused = false;
+            if (screen.type === 'select' || screen.type === 'account') {
+                buttonFocused = windowsFocusIndex === screen.options.length;
+            } else if (screen.type === 'network') {
+                buttonFocused = windowsFocusIndex === screen.networks.length;
+            } else if (screen.type === 'privacy') {
+                buttonFocused = windowsFocusIndex === screen.settings.length;
+            } else {
+                buttonFocused = true; // For license, choice, input - button is always "focused"
+            }
+
+            // Footer with button
+            html += `<div class="windows-footer">
+                <div></div>
+                <div class="windows-footer-right">
+                    <button class="windows-btn primary ${buttonFocused ? 'focused' : ''}" onclick="windowsNext()">${screen.nextBtn}</button>
+                </div>
+            </div>`;
+
+            html += `<div class="windows-progress">${progressHtml}</div>`;
+
+            windowsScreen.innerHTML = html;
+
+            // Focus input if it's an input screen
+            if (screen.type === 'input') {
+                setTimeout(() => {
+                    const input = document.getElementById('windows-name-input');
+                    if (input) input.focus();
+                }, 50);
+            }
+        }
+
+        function selectWindowsOption(optionId) {
+            windowsSelectedOption = optionId;
+            const screen = windowsScreens[windowsCurrentScreen];
+            if (screen.options) {
+                windowsFocusIndex = screen.options.findIndex(o => o.id === optionId);
+            } else if (screen.networks) {
+                windowsFocusIndex = screen.networks.findIndex(n => n.id === optionId);
+            }
+            windowsNetworkError = false;
+            renderWindowsScreen();
+        }
+
+        function toggleWindowsCheckbox(index) {
+            const checkbox = document.querySelectorAll('.windows-checkbox input[type="checkbox"]')[index];
+            if (checkbox) checkbox.checked = !checkbox.checked;
+            windowsFocusIndex = index;
+        }
+
+        function handleWindowsKeydown(e) {
+            if (!windowsGameActive) return;
+            
+            // Don't intercept if typing in input (except for Tab/Enter)
+            const isInInput = document.activeElement.tagName === 'INPUT' && document.activeElement.type === 'text';
+            if (isInInput && e.key !== 'Tab' && e.key !== 'Enter') {
+                return;
+            }
+
+            const screen = windowsScreens[windowsCurrentScreen];
+            
+            // Get max index for current screen type
+            let itemCount = 0;
+            if (screen.type === 'select' || screen.type === 'account') {
+                itemCount = screen.options.length;
+            } else if (screen.type === 'network') {
+                itemCount = screen.networks.length;
+            } else if (screen.type === 'privacy') {
+                itemCount = screen.settings.length;
+            }
+            
+            // Total focusable items = items + 1 (for the button)
+            const maxFocusIndex = itemCount; // 0 to itemCount-1 are items, itemCount is the button
+
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                if (e.shiftKey) {
+                    windowsFocusIndex = windowsFocusIndex > 0 ? windowsFocusIndex - 1 : maxFocusIndex;
+                } else {
+                    windowsFocusIndex = windowsFocusIndex < maxFocusIndex ? windowsFocusIndex + 1 : 0;
+                }
+                renderWindowsScreen();
+            } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                if (windowsFocusIndex < maxFocusIndex) {
+                    windowsFocusIndex++;
+                }
+                renderWindowsScreen();
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (windowsFocusIndex > 0) {
+                    windowsFocusIndex--;
+                }
+                renderWindowsScreen();
+            } else if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                
+                // If focused on the button (last index) or on screens without items
+                if (windowsFocusIndex === maxFocusIndex || itemCount === 0) {
+                    windowsNext();
+                    return;
+                }
+                
+                // Otherwise, interact with the focused item
+                if (screen.type === 'privacy') {
+                    // Toggle checkbox
+                    toggleWindowsCheckbox(windowsFocusIndex);
+                } else if (screen.type === 'select' || screen.type === 'account') {
+                    // Select this option
+                    windowsSelectedOption = screen.options[windowsFocusIndex].id;
+                    windowsNetworkError = false;
+                    renderWindowsScreen();
+                } else if (screen.type === 'network') {
+                    // Select this network
+                    windowsSelectedOption = screen.networks[windowsFocusIndex].id;
+                    windowsNetworkError = false;
+                    renderWindowsScreen();
+                }
+            }
+        }
+
+        function windowsNext() {
+            const screen = windowsScreens[windowsCurrentScreen];
+
+            // Validation for selection screens - must have something selected
+            if ((screen.type === 'select' || screen.type === 'account') && !windowsSelectedOption) {
+                return; // Can't proceed without selection
+            }
+
+            // Validation for network - must select the correct network
+            if (screen.type === 'network') {
+                if (!windowsSelectedOption) {
+                    return; // Must select a network
+                }
+                if (windowsSelectedOption !== windowsRequiredNetwork) {
+                    windowsNetworkError = true;
+                    renderWindowsScreen();
+                    return;
+                }
+            }
+
+            // Validation for input screen
+            if (screen.type === 'input') {
+                windowsDeviceName = document.getElementById('windows-name-input')?.value || windowsDeviceName;
+                if (!windowsDeviceName.trim()) {
+                    windowsDeviceName = 'FRID-PC';
+                }
+            }
+
+            // Show loading animation briefly
+            windowsScreen.innerHTML = `
+                <div class="windows-loading">
+                    <div class="windows-spinner"></div>
+                    <p>Please wait...</p>
+                </div>
+            `;
+
+            setTimeout(() => {
+                windowsCurrentScreen++;
+                windowsFocusIndex = 0;
+                windowsSelectedOption = null;
+                windowsNetworkError = false;
+                renderWindowsScreen();
+            }, 300);
+        }
+
+        function showWindowsComplete() {
+            windowsGameActive = false;
+            clearInterval(windowsTimerInterval);
+            document.removeEventListener('keydown', handleWindowsKeydown);
+
+            const totalTime = (Date.now() - windowsStartTime) / 1000;
+
+            const modal = document.getElementById('results-modal');
+            const resultsContent = document.getElementById('results-content');
+            const resultsTitle = document.getElementById('results-title');
+
+            modal.classList.remove('cheater');
+            resultsTitle.textContent = '🪟 Windows Setup Complete!';
+
+            let rating = '';
+            if (totalTime < 20) rating = '🏆 PROMPT ENGINEER';
+            else if (totalTime < 30) rating = '⚡ SYSADMIN PRO';
+            else if (totalTime < 45) rating = '👍 TECH SAVVY';
+            else if (totalTime < 60) rating = '📚 SI OPP JOBBEN';
+            else rating = '🐌 TAKE YOUR TIME';
+
+            resultsContent.innerHTML = `
+                <div class="accuracy-ring">${totalTime.toFixed(1)}s</div>
+                <div class="result-item">
+                    <span class="result-label">Total Time</span>
+                    <span class="result-value">${totalTime.toFixed(2)}s</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Device Name</span>
+                    <span class="result-value">${windowsDeviceName || 'FRID-PC'}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Rating</span>
+                    <span class="result-value">${rating}</span>
+                </div>
+            `;
+
+            document.getElementById('results-overlay').classList.add('show');
+        }
+
+        function resetWindowsGame() {
+            windowsTimerEl.textContent = '0.0s';
+            windowsScreen.innerHTML = `
+                <div class="windows-welcome">
+                    <div class="windows-logo">🪟</div>
+                    <h2>Windows 11 Setup Speedrun</h2>
+                    <p>Navigate through the Windows setup as fast as possible!</p>
+                    <p class="windows-controls">Use <kbd>Tab</kbd> <kbd>Enter</kbd> <kbd>↑</kbd> <kbd>↓</kbd> or Mouse</p>
+                    <button class="windows-btn primary" onclick="startWindowsGame()">Start Setup</button>
+                </div>
+            `;
+            document.removeEventListener('keydown', handleWindowsKeydown);
+        }
+
+        // ============ KEYBOARD SHORTCUTS ============
+        document.addEventListener('keydown', (e) => {
+            // Press R to restart aim-based games
+            if (e.key.toLowerCase() === 'r' && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                // Don't trigger if typing in an input
+                if (document.activeElement.tagName === 'INPUT') return;
+                
+                // Check if Aim Trainer is active and game is running
+                if (document.getElementById('aim-section').classList.contains('active') && aimGameActive) {
+                    // Stop game without showing results
+                    aimGameActive = false;
+                    clearInterval(aimTimerInterval);
+                    if (currentTarget) {
+                        currentTarget.remove();
+                        currentTarget = null;
+                    }
+                    aimContainer.removeEventListener('click', handleMiss);
+                    resetAimGame();
+                    startAimGame();
+                }
+                // Check if Tile Frenzy is active and game is running
+                else if (document.getElementById('frenzy-section').classList.contains('active') && frenzyGameActive) {
+                    // Stop game without showing results
+                    frenzyGameActive = false;
+                    clearInterval(frenzyTimerInterval);
+                    frenzyCells.forEach(cell => {
+                        cell.classList.remove('active');
+                        cell.innerHTML = '';
+                        cell.removeEventListener('mousedown', handleFrenzyClick);
+                    });
+                    activeTiles.clear();
+                    resetFrenzyGame();
+                    startFrenzyGame();
+                }
+            }
+        });
 
         // ============ TAB SWITCHING ============
         function switchTab(tab) {
@@ -2020,6 +3547,12 @@
             } else if (tab === 'cisco') {
                 tabs[3].classList.add('active');
                 document.getElementById('cisco-section').classList.add('active');
+            } else if (tab === 'ciscomatch') {
+                tabs[4].classList.add('active');
+                document.getElementById('ciscomatch-section').classList.add('active');
+            } else if (tab === 'windows') {
+                tabs[5].classList.add('active');
+                document.getElementById('windows-section').classList.add('active');
             }
         }
 
@@ -2035,6 +3568,10 @@
                 resetFrenzyGame();
             } else if (document.getElementById('cisco-section').classList.contains('active')) {
                 resetCiscoGame();
+            } else if (document.getElementById('ciscomatch-section').classList.contains('active')) {
+                resetMatchGame();
+            } else if (document.getElementById('windows-section').classList.contains('active')) {
+                resetWindowsGame();
             }
         }
 
