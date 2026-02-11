@@ -566,6 +566,220 @@
             to { opacity: 0; transform: translateY(-50px) scale(1.5); }
         }
 
+        /* Cisco CLI Styles */
+        .cisco-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+        }
+
+        .cisco-task-info, .cisco-timer-box {
+            text-align: center;
+        }
+
+        .cisco-task-label, .cisco-timer-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .cisco-task-num, .cisco-timer {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-light);
+        }
+
+        .difficulty-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .difficulty-badge.easy {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.4);
+        }
+
+        .difficulty-badge.medium {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+            border: 1px solid rgba(243, 156, 18, 0.4);
+        }
+
+        .difficulty-badge.hard {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.4);
+        }
+
+        .cisco-scenario {
+            background: rgba(72, 52, 212, 0.1);
+            border: 1px solid rgba(72, 52, 212, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .cisco-scenario h3 {
+            color: var(--primary-light);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .cisco-scenario p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .cisco-terminal {
+            background: #0d1117;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #30363d;
+            margin-bottom: 15px;
+        }
+
+        .terminal-header {
+            background: #161b22;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27ca40; }
+
+        .terminal-title {
+            margin-left: 10px;
+            color: #8b949e;
+            font-size: 0.85rem;
+        }
+
+        .terminal-body {
+            padding: 15px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            min-height: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .terminal-output {
+            margin-bottom: 10px;
+        }
+
+        .terminal-output .line {
+            margin-bottom: 5px;
+            color: #c9d1d9;
+        }
+
+        .terminal-output .line.command {
+            color: #58a6ff;
+        }
+
+        .terminal-output .line.success {
+            color: #3fb950;
+        }
+
+        .terminal-output .line.error {
+            color: #f85149;
+        }
+
+        .terminal-output .line.system {
+            color: #8b949e;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-prompt {
+            color: #3fb950;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #c9d1d9;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            caret-color: #58a6ff;
+        }
+
+        .terminal-input:disabled {
+            opacity: 0.5;
+        }
+
+        .cisco-hint {
+            background: rgba(243, 156, 18, 0.1);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+            border-radius: 8px;
+            padding: 12px 15px;
+            color: #f39c12;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .cisco-hint.show {
+            display: block;
+        }
+
+        .expected-commands {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .expected-commands h4 {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .expected-commands code {
+            display: block;
+            background: rgba(72, 52, 212, 0.2);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            color: var(--primary-light);
+        }
+
+        .expected-commands code:last-child {
+            margin-bottom: 0;
+        }
+
         @media (max-width: 768px) {
             .stats-row {
                 grid-template-columns: repeat(2, 1fr);
@@ -597,6 +811,16 @@
             .frenzy-cell {
                 border-radius: 8px;
             }
+            
+            .cisco-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .terminal-body {
+                font-size: 0.85rem;
+                min-height: 150px;
+            }
         }
     </style>
 </head>
@@ -614,6 +838,7 @@
             <button class="tab-btn active" onclick="switchTab('typing')">⌨️ Typing Challenge</button>
             <button class="tab-btn" onclick="switchTab('aim')">🎯 Aim Trainer</button>
             <button class="tab-btn" onclick="switchTab('frenzy')">⚡ Tile Frenzy</button>
+            <button class="tab-btn" onclick="switchTab('cisco')">💻 Cisco CLI</button>
         </div>
 
         <!-- Typing Challenge Section -->
@@ -729,6 +954,55 @@
 
                 <div class="progress-bar">
                     <div class="progress-fill" id="frenzy-progress" style="width: 100%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cisco CLI Section -->
+        <section id="cisco-section" class="game-section">
+            <div class="card">
+                <div class="cisco-header">
+                    <div class="cisco-task-info">
+                        <span class="cisco-task-label">Task</span>
+                        <span class="cisco-task-num" id="cisco-task-num">1/5</span>
+                    </div>
+                    <div class="cisco-difficulty" id="cisco-difficulty">
+                        <span class="difficulty-badge easy">EASY</span>
+                    </div>
+                    <div class="cisco-timer-box">
+                        <span class="cisco-timer-label">Time</span>
+                        <span class="cisco-timer" id="cisco-timer">0.0s</span>
+                    </div>
+                </div>
+
+                <div class="cisco-challenge" id="cisco-challenge">
+                    <div class="cisco-scenario">
+                        <h3 id="cisco-title">Welcome to Cisco CLI Challenge!</h3>
+                        <p id="cisco-description">Test your networking skills with 5 challenges from easy to hard. Type the correct Cisco IOS commands to complete each task.</p>
+                    </div>
+                    
+                    <div class="cisco-terminal" id="cisco-terminal">
+                        <div class="terminal-header">
+                            <span class="terminal-dot red"></span>
+                            <span class="terminal-dot yellow"></span>
+                            <span class="terminal-dot green"></span>
+                            <span class="terminal-title">Cisco IOS Terminal</span>
+                        </div>
+                        <div class="terminal-body" id="terminal-body">
+                            <div class="terminal-output" id="terminal-output"></div>
+                            <div class="terminal-input-line">
+                                <span class="terminal-prompt" id="terminal-prompt">Router></span>
+                                <input type="text" class="terminal-input" id="cisco-input" 
+                                       placeholder="Type command here..." autocomplete="off" spellcheck="false" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cisco-hint" id="cisco-hint"></div>
+                </div>
+
+                <div class="btn-center">
+                    <button class="btn" id="cisco-start-btn" onclick="startCiscoGame()">🚀 Start Challenge</button>
                 </div>
             </div>
         </section>
@@ -1457,6 +1731,275 @@
             activeTiles.clear();
         }
 
+        // ============ CISCO CLI GAME ============
+        const ciscoTasks = [
+            {
+                id: 1,
+                title: "Enter Privileged EXEC Mode",
+                description: "You're connected to a router in user EXEC mode. Enter privileged EXEC mode to access administrative commands.",
+                difficulty: "easy",
+                startPrompt: "Router>",
+                commands: [
+                    { input: "enable", output: "", newPrompt: "Router#" }
+                ],
+                hint: "Use the 'enable' command to enter privileged mode"
+            },
+            {
+                id: 2,
+                title: "Enter Global Configuration Mode",
+                description: "You're in privileged EXEC mode. Enter global configuration mode to make system-wide changes.",
+                difficulty: "easy",
+                startPrompt: "Router#",
+                commands: [
+                    { input: ["configure terminal", "conf t"], output: "Enter configuration commands, one per line. End with CNTL/Z.", newPrompt: "Router(config)#" }
+                ],
+                hint: "Use 'configure terminal' or 'conf t' to enter global config mode"
+            },
+            {
+                id: 3,
+                title: "Set the Hostname",
+                description: "You're in global configuration mode. Set the router's hostname to 'CoreRouter'.",
+                difficulty: "medium",
+                startPrompt: "Router(config)#",
+                commands: [
+                    { input: "hostname CoreRouter", output: "", newPrompt: "CoreRouter(config)#" }
+                ],
+                hint: "Use 'hostname <name>' to set the device name"
+            },
+            {
+                id: 4,
+                title: "Create and Name a VLAN",
+                description: "You're on a switch in global configuration mode. Create VLAN 100 and name it 'Sales'.",
+                difficulty: "medium",
+                startPrompt: "Switch(config)#",
+                commands: [
+                    { input: "vlan 100", output: "", newPrompt: "Switch(config-vlan)#" },
+                    { input: "name Sales", output: "", newPrompt: "Switch(config-vlan)#" }
+                ],
+                hint: "First create the VLAN with 'vlan <number>', then use 'name <name>'"
+            },
+            {
+                id: 5,
+                title: "Configure Interface IP Address",
+                description: "Configure interface GigabitEthernet0/1 with IP address 192.168.1.1 and subnet mask 255.255.255.0, then enable the interface.",
+                difficulty: "hard",
+                startPrompt: "Router(config)#",
+                commands: [
+                    { input: ["interface gigabitethernet0/1", "interface GigabitEthernet0/1", "int g0/1", "interface g0/1", "int gigabitethernet0/1"], output: "", newPrompt: "Router(config-if)#" },
+                    { input: "ip address 192.168.1.1 255.255.255.0", output: "", newPrompt: "Router(config-if)#" },
+                    { input: "no shutdown", output: "%LINK-5-CHANGED: Interface GigabitEthernet0/1, changed state to up", newPrompt: "Router(config-if)#" }
+                ],
+                hint: "Enter the interface, set IP with 'ip address <ip> <mask>', then enable with 'no shutdown'"
+            }
+        ];
+
+        let ciscoGameActive = false;
+        let ciscoStartTime = null;
+        let ciscoTimerInterval = null;
+        let currentTask = 0;
+        let currentCommandIndex = 0;
+        let taskTimes = [];
+        let totalErrors = 0;
+
+        const ciscoInput = document.getElementById('cisco-input');
+        const ciscoTimerEl = document.getElementById('cisco-timer');
+        const ciscoTaskNumEl = document.getElementById('cisco-task-num');
+        const ciscoDifficultyEl = document.getElementById('cisco-difficulty');
+        const ciscoTitleEl = document.getElementById('cisco-title');
+        const ciscoDescEl = document.getElementById('cisco-description');
+        const terminalPrompt = document.getElementById('terminal-prompt');
+        const terminalOutput = document.getElementById('terminal-output');
+        const ciscoHint = document.getElementById('cisco-hint');
+        const ciscoStartBtn = document.getElementById('cisco-start-btn');
+
+        function startCiscoGame() {
+            ciscoGameActive = true;
+            ciscoStartTime = Date.now();
+            currentTask = 0;
+            currentCommandIndex = 0;
+            taskTimes = [];
+            totalErrors = 0;
+            
+            ciscoStartBtn.style.display = 'none';
+            ciscoInput.disabled = false;
+            ciscoInput.focus();
+            
+            loadCiscoTask();
+            
+            ciscoTimerInterval = setInterval(() => {
+                const elapsed = (Date.now() - ciscoStartTime) / 1000;
+                ciscoTimerEl.textContent = elapsed.toFixed(1) + 's';
+            }, 100);
+        }
+
+        function loadCiscoTask() {
+            const task = ciscoTasks[currentTask];
+            
+            ciscoTaskNumEl.textContent = `${currentTask + 1}/5`;
+            ciscoTitleEl.textContent = task.title;
+            ciscoDescEl.textContent = task.description;
+            
+            // Set difficulty badge
+            ciscoDifficultyEl.innerHTML = `<span class="difficulty-badge ${task.difficulty}">${task.difficulty.toUpperCase()}</span>`;
+            
+            // Reset terminal
+            terminalOutput.innerHTML = '<div class="line system">--- New Task ---</div>';
+            terminalPrompt.textContent = task.startPrompt;
+            currentCommandIndex = 0;
+            
+            // Hide hint
+            ciscoHint.classList.remove('show');
+            
+            ciscoInput.value = '';
+            ciscoInput.focus();
+        }
+
+        ciscoInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && ciscoGameActive) {
+                e.preventDefault();
+                processCiscoCommand();
+            }
+        });
+
+        // Prevent paste in cisco input
+        ciscoInput.addEventListener('paste', (e) => e.preventDefault());
+        ciscoInput.addEventListener('drop', (e) => e.preventDefault());
+
+        function processCiscoCommand() {
+            const input = ciscoInput.value.trim().toLowerCase();
+            const task = ciscoTasks[currentTask];
+            const expectedCommand = task.commands[currentCommandIndex];
+            
+            // Check if input matches expected (can be array of valid inputs)
+            const validInputs = Array.isArray(expectedCommand.input) 
+                ? expectedCommand.input.map(i => i.toLowerCase())
+                : [expectedCommand.input.toLowerCase()];
+            
+            const isCorrect = validInputs.includes(input);
+            
+            // Add command to output
+            const cmdLine = document.createElement('div');
+            cmdLine.className = 'line command';
+            cmdLine.textContent = terminalPrompt.textContent + ' ' + ciscoInput.value;
+            terminalOutput.appendChild(cmdLine);
+            
+            if (isCorrect) {
+                // Success
+                if (expectedCommand.output) {
+                    const outputLine = document.createElement('div');
+                    outputLine.className = 'line success';
+                    outputLine.textContent = expectedCommand.output;
+                    terminalOutput.appendChild(outputLine);
+                }
+                
+                terminalPrompt.textContent = expectedCommand.newPrompt;
+                currentCommandIndex++;
+                ciscoHint.classList.remove('show');
+                
+                // Check if task complete
+                if (currentCommandIndex >= task.commands.length) {
+                    const taskTime = (Date.now() - ciscoStartTime) / 1000;
+                    taskTimes.push(taskTime);
+                    
+                    const successLine = document.createElement('div');
+                    successLine.className = 'line success';
+                    successLine.textContent = '✓ Task completed!';
+                    terminalOutput.appendChild(successLine);
+                    
+                    currentTask++;
+                    
+                    if (currentTask >= ciscoTasks.length) {
+                        // All tasks complete
+                        setTimeout(() => endCiscoGame(), 1000);
+                    } else {
+                        // Load next task
+                        setTimeout(() => {
+                            ciscoStartTime = Date.now(); // Reset timer for next task
+                            loadCiscoTask();
+                        }, 1500);
+                    }
+                }
+            } else {
+                // Error
+                totalErrors++;
+                const errorLine = document.createElement('div');
+                errorLine.className = 'line error';
+                errorLine.textContent = '% Invalid input detected. Try again.';
+                terminalOutput.appendChild(errorLine);
+                
+                // Show hint after 2 errors on same command
+                if (totalErrors % 2 === 0) {
+                    ciscoHint.textContent = '💡 Hint: ' + task.hint;
+                    ciscoHint.classList.add('show');
+                }
+            }
+            
+            ciscoInput.value = '';
+            
+            // Scroll terminal to bottom
+            const terminalBody = document.getElementById('terminal-body');
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        function endCiscoGame() {
+            ciscoGameActive = false;
+            clearInterval(ciscoTimerInterval);
+            ciscoInput.disabled = true;
+            
+            const totalTime = taskTimes.reduce((a, b) => a + b, 0);
+            const avgTime = totalTime / taskTimes.length;
+            
+            const modal = document.getElementById('results-modal');
+            const resultsContent = document.getElementById('results-content');
+            const resultsTitle = document.getElementById('results-title');
+            
+            modal.classList.remove('cheater');
+            resultsTitle.textContent = '💻 CLI Challenge Complete!';
+            
+            let rating = '';
+            if (totalTime < 30 && totalErrors < 3) rating = '🏆 NETWORK ENGINEER';
+            else if (totalTime < 45 && totalErrors < 5) rating = '⭐ CCNA READY';
+            else if (totalTime < 60) rating = '👍 LEARNING FAST';
+            else if (totalTime < 90) rating = '📚 KEEP STUDYING';
+            else rating = '🎮 PRACTICE MORE';
+            
+            let taskBreakdown = taskTimes.map((time, i) => 
+                `<div class="result-item">
+                    <span class="result-label">Task ${i + 1} (${ciscoTasks[i].difficulty})</span>
+                    <span class="result-value">${time.toFixed(1)}s</span>
+                </div>`
+            ).join('');
+            
+            resultsContent.innerHTML = `
+                <div class="accuracy-ring">${totalTime.toFixed(1)}s</div>
+                ${taskBreakdown}
+                <div class="result-item">
+                    <span class="result-label">Total Errors</span>
+                    <span class="result-value ${totalErrors > 5 ? 'danger' : ''}">${totalErrors}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Rating</span>
+                    <span class="result-value">${rating}</span>
+                </div>
+            `;
+            
+            document.getElementById('results-overlay').classList.add('show');
+        }
+
+        function resetCiscoGame() {
+            ciscoStartBtn.style.display = 'inline-block';
+            ciscoTimerEl.textContent = '0.0s';
+            ciscoTaskNumEl.textContent = '1/5';
+            ciscoDifficultyEl.innerHTML = '<span class="difficulty-badge easy">EASY</span>';
+            ciscoTitleEl.textContent = 'Welcome to Cisco CLI Challenge!';
+            ciscoDescEl.textContent = 'Test your networking skills with 5 challenges from easy to hard. Type the correct Cisco IOS commands to complete each task.';
+            terminalOutput.innerHTML = '';
+            terminalPrompt.textContent = 'Router>';
+            ciscoInput.value = '';
+            ciscoInput.disabled = true;
+            ciscoHint.classList.remove('show');
+        }
+
         // ============ TAB SWITCHING ============
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -1474,6 +2017,9 @@
             } else if (tab === 'frenzy') {
                 tabs[2].classList.add('active');
                 document.getElementById('frenzy-section').classList.add('active');
+            } else if (tab === 'cisco') {
+                tabs[3].classList.add('active');
+                document.getElementById('cisco-section').classList.add('active');
             }
         }
 
@@ -1487,6 +2033,8 @@
                 resetAimGame();
             } else if (document.getElementById('frenzy-section').classList.contains('active')) {
                 resetFrenzyGame();
+            } else if (document.getElementById('cisco-section').classList.contains('active')) {
+                resetCiscoGame();
             }
         }
 
