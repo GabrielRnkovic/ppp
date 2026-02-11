@@ -508,6 +508,10 @@
             transition: all 0.15s ease;
             border: 2px solid transparent;
             aspect-ratio: 1;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
+            -webkit-touch-callout: none;
         }
 
         .frenzy-cell:hover {
@@ -1241,9 +1245,9 @@
             // Spawn initial tiles
             spawnFrenzyTiles();
             
-            // Setup cell click handlers
+            // Setup cell click handlers (use mousedown for more reliable detection)
             frenzyCells.forEach(cell => {
-                cell.addEventListener('click', handleFrenzyClick);
+                cell.addEventListener('mousedown', handleFrenzyClick);
             });
             
             frenzyTimerInterval = setInterval(() => {
@@ -1296,6 +1300,7 @@
         }
 
         function handleFrenzyClick(e) {
+            e.preventDefault();
             if (!frenzyGameActive) return;
             
             const cell = e.currentTarget;
@@ -1394,7 +1399,7 @@
             frenzyCells.forEach(cell => {
                 cell.classList.remove('active');
                 cell.innerHTML = '';
-                cell.removeEventListener('click', handleFrenzyClick);
+                cell.removeEventListener('mousedown', handleFrenzyClick);
             });
             activeTiles.clear();
             
